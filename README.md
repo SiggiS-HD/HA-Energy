@@ -27,7 +27,7 @@ Alle Pfade und Parameter werden zentral über die Datei `config.json` verwaltet.
 ### 1. Projekt klonen oder entpacken
 
 ```bash
-git clone <repository-url> hadb
+git clone https://github.com/SiggiS-HD/HA-Energy.git hadb
 cd hadb
 ```
 
