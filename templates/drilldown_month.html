@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+
+{% block title %}Energieverbrauch – {{ year }}-{{ '%02d' % month }}{% endblock %}
+{% block heading %}Energieverbrauch – {{ year }}-{{ '%02d' % month }}{% endblock %}
+
+{% block navigation %}
+<div class="nav-buttons">
+    <button onclick="window.location.href='/'">Zurück zur Jahresansicht</button>
+    <button onclick="window.location.href='/{{ year if month > 1 else year - 1 }}/{{ '%02d' % (month - 1 if month > 1 else 12) }}'">Voriger Monat</button>
+    <button onclick="window.location.href='/{{ year if month < 12 else year + 1 }}/{{ '%02d' % (month + 1 if month < 12 else 1) }}'">Nächster Monat</button>
+</div>
+{% endblock %}
+
+{% block chart_events %}
+events: {
+    dataPointSelection: function(event, chartContext, config) {
+        const day = chartContext.w.config.series[0].data[config.dataPointIndex].x;
+        const year = {{ year }};
+        const month = '{{ '%02d' % month }}';
+        const url = `/${year}/${month}/${day}`;
+        window.location.href = url;
+    }
+},
+{% endblock %}
+
+{% block xaxis %}
+    tickAmount: 31
+{% endblock %}

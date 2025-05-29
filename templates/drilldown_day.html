@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+
+{% block title %}Energieverbrauch – {{ year }}-{{ '%02d' % month }}-{{ '%02d' % day }}{% endblock %}
+{% block heading %}Energieverbrauch – {{ year }}-{{ '%02d' % month }}-{{ '%02d' % day }}{% endblock %}
+
+{% block navigation %}
+<div class="nav-buttons">
+    <button onclick="window.location.href='/{{ year }}/{{ '%02d' % month }}'">Zurück zur Monatsansicht</button>
+    <button onclick="window.location.href='/{{ prev_year }}/{{ '%02d' % prev_month }}/{{ '%02d' % prev_day }}'">Vorheriger Tag</button>
+    <button onclick="window.location.href='/{{ next_year }}/{{ '%02d' % next_month }}/{{ '%02d' % next_day }}'">Nächster Tag</button>
+</div>
+{% endblock %}
+
+{% block xaxis %}
+    tickAmount: 24,
+    labels: { format: 'HH:mm' }
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "backup_dir": "\\\\CL10NAS\\web\\ha",
+  "sqlite_dir": "SQLite",
+  "sensor_file": "sensorliste.txt",
+  "influxdb": {
+    "host": "CL10NAS",
+    "port": 8086,
+    "database": "hadb"
+  }
+}

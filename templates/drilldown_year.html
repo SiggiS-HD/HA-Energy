@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+
+{% block title %}Jährlicher Energieverbrauch {{ year }}{% endblock %}
+{% block heading %}Energieverbrauch – Jahr {{ year }}{% endblock %}
+
+{% block navigation %}
+<div class="nav-buttons">
+    <button onclick="window.location.href='/?year={{ year - 1 }}'">Vorheriges Jahr</button>
+    <button onclick="window.location.href='/?year={{ year + 1 }}'">Nächstes Jahr</button>
+</div>
+{% endblock %}
+
+{% block chart_events %}
+events: {
+    dataPointSelection: function(event, chartContext, config) {
+        const month = config.dataPointIndex + 1;
+        const year = {{ year }};
+        const url = `/${year}/${month.toString().padStart(2, '0')}`;
+        window.location.href = url;
+    }
+},
+{% endblock %}
+
+{% block xaxis %}
+    categories: {{ month_categories|tojson }}
+{% endblock %}

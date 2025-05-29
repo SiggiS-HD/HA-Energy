@@ -1,0 +1,21 @@
+sensor.sonoff_10022c7757_energy; Server
+sensor.sonoff_10022c796d_energy; Arbeitsplatz_1
+sensor.sonoff_1002441a4b_energy; Arbeitsplatz_2
+sensor.sonoff_10024411c8_energy; Backofen
+sensor.sonoff_1002440999_energy; Dampfgarer
+sensor.sonoff_1002440952_energy; Waschmaschine
+sensor.sonoff_10024fcd3f_energy; Trockner
+sensor.sonoff_10022c78d0_energy; Klima_Wz_Sz
+sensor.sonoff_10024fd4ce_energy; Klima_Az
+sensor.sonoff_10022c77e9_energy; Keller
+sensor.samsung_tv_wohnzimmer_energy; Samsung_Wz
+sensor.samsung_tv_schlafzimmer_energy; Samsung_Sz
+sensor.dyson_wohnen_energy_energy; Dyson_Wz
+sensor.dyson_schlafen_energy_energy; Dyson_Sz
+sensor.bad_energy; Sonos_Bad
+sensor.kuche_energy; Sonos_Ez
+sensor.schlafzimmer_energy; Sonos_Sz1
+sensor.sonos_energy; Sonos_Az
+sensor.schlafzimmer_2_energy; Sonos_Sz2
+sensor.wohnzimmer_energy; Sonos_Wz
+

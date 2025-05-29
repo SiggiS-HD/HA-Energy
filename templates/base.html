@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Energieverbrauch{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .nav {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .nav a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .nav-buttons {
+            margin-bottom: 20px;
+        }
+        .nav-buttons button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            margin-right: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        .nav-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>{% block heading %}{% endblock %} {% if total_kwh %}<span style="font-weight: normal;">(gesamt: {{ total_kwh }} kWh)</span>{% endif %}</h1>
+
+
+    <div class="nav">
+        {% block navigation %}{% endblock %}
+    </div>
+
+    <div id="chart"></div>
+
+    <script>
+        var options = {
+            chart: {
+                type: 'bar',
+                stacked: true,
+                {% block chart_events %}{% endblock %}
+            },
+            series: {{ series_data|safe }},
+            xaxis: {
+                type: 'category',
+                {% block xaxis %}{% endblock %}
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(1) + " kWh";
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " kWh";
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '70%'
+                }
+            }
+        };
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+</body>
+</html>

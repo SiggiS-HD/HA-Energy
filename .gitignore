@@ -1,0 +1,18 @@
+__pycache__/
+*.spec
+*.log
+
+# VSCode
+.vscode/
+
+# Python cache
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env/
+venv/
+
+_Ablauf.txt
+# Home Assistant Database
+SQLite/
