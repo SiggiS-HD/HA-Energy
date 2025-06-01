@@ -1,9 +1,9 @@
-
 import tarfile
 import os
 from pathlib import Path
 import shutil
 import json
+from datetime import datetime
 
 def load_config():
     with open(Path(__file__).parent / "config.json", "r") as f:
@@ -16,6 +16,17 @@ def extract_latest_ha_db():
     temp_dir = output_dir / "temp_extract"
     output_dir.mkdir(parents=True, exist_ok=True)
     temp_dir.mkdir(parents=True, exist_ok=True)
+
+    # Heutiges Datum als Marker
+    today = datetime.now().strftime("%Y-%m-%d")
+    final_path = output_dir / "home-assistant_v2.db"
+
+    # Wenn Datei bereits heute aktualisiert wurde, überspringen
+    if final_path.exists():
+        modified_date = datetime.fromtimestamp(final_path.stat().st_mtime).strftime("%Y-%m-%d")
+        if modified_date == today:
+            print(f"⏩ Die Datei wurde heute ({today}) bereits extrahiert. Vorgang wird übersprungen.")
+            return str(final_path)
 
     backups = sorted(backup_dir.glob("*.tar"), key=os.path.getmtime, reverse=True)
     if not backups:
@@ -41,7 +52,6 @@ def extract_latest_ha_db():
         print("❌ Datei home-assistant_v2.db nicht gefunden.")
         return None
 
-    final_path = output_dir / "home-assistant_v2.db"
     shutil.copy(db_path, final_path)
     print(f"✅ Datenbank erfolgreich extrahiert nach: {final_path}")
 

@@ -47,7 +47,7 @@ def import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_d
 
     query = f"""
             SELECT start_ts, state, sum FROM statistics
-            WHERE metadata_id = {metadata_id} AND start_ts >= {int(start_date.timestamp())}
+            WHERE metadata_id = {metadata_id} AND start_ts > {int(start_date.timestamp())}
             ORDER BY start_ts ASC
             """
     df = pd.read_sql_query(query, conn)
