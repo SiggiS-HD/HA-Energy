@@ -255,5 +255,51 @@ def view_day(year, month, day):
     )
 
 
+@app.route('/total/<string:view_type>/<int:year>', defaults={'month': None, 'day': None})
+@app.route('/total/<string:view_type>/<int:year>/<int:month>', defaults={'day': None})
+@app.route('/total/<string:view_type>/<int:year>/<int:month>/<int:day>')
+def total_per_sensor(view_type, year, month, day):
+    from collections import defaultdict
+    config = load_config()
+    influx_client = InfluxDBClient(
+        host=config["influxdb"]["host"],
+        port=config["influxdb"]["port"]
+    )
+    influx_client.switch_database(config["influxdb"]["database"])
+    sensors = get_all_sensors(influx_client)
+
+    if view_type == "year":
+        start, end = get_year_range(year)
+        heading = f"Jahresverbrauch {year}"
+        back_url = f"/?year={year}"
+    elif view_type == "month" and month:
+        start, end = get_month_range(year, month)
+        heading = f"Monatsverbrauch {year}-{month:02d}"
+        back_url = f"/{year}/{month:02d}"
+    elif view_type == "day" and month and day:
+        start, end = get_day_range(year, month, day)
+        heading = f"Tagesverbrauch {year}-{month:02d}-{day:02d}"
+        back_url = f"/{year}/{month:02d}/{day:02d}"
+    else:
+        return "Ungültige Parameter", 400
+
+    totals = {}
+    total_kwh = 0.0
+    for sensor in sensors:
+        sensor_type = get_sensor_type(influx_client, sensor)
+        query = generate_influx_query(sensor, sensor_type, period="1h", start=start, end=end)
+        result = list(influx_client.query(query).get_points())
+        field = "value" if sensor_type == "delta" else "sum"
+        total = sum(round(r.get(field, 0), 4) for r in result if r.get(field, 0) > 0)
+        if total > 0:
+            totals[sensor] = total
+            total_kwh += total
+
+    sorted_data = sorted(totals.items(), key=lambda x: x[1], reverse=True)
+    series_data = json.dumps([{"name": "Gesamtverbrauch", "data": [{"x": sensor, "y": round(val, 2)} for sensor, val in sorted_data]}])
+
+    return render_template("total_per_sensor.html", heading=heading, series_data=series_data, total_kwh=round(total_kwh, 2), back_url=back_url)
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

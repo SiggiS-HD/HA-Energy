@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ heading }}{% endblock %}
+{% block heading %}{{ heading }}{% endblock %}
+
+{% block navigation %}
+<div class="nav-buttons">
+    <button onclick="window.location.href='{{ back_url }}'">Zurück</button>
+</div>
+{% endblock %}

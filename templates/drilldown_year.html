@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Jährlicher Energieverbrauch {{ year }}{% endblock %}
@@ -8,6 +7,7 @@
 <div class="nav-buttons">
     <button onclick="window.location.href='/?year={{ year - 1 }}'">Vorheriges Jahr</button>
     <button onclick="window.location.href='/?year={{ year + 1 }}'">Nächstes Jahr</button>
+    <button onclick="window.location.href='/total/year/{{ year }}'">Gesamtverbrauch Einzelgeräte</button>
 </div>
 {% endblock %}
 
