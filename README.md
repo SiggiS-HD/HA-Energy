@@ -8,7 +8,7 @@
 
 1. **Backup-Extraktion**: Das Skript `extract_latest_ha_db.py` kopiert die Datei `home-assistant_v2.db` aus dem aktuellsten Home Assistant Full Backup ins Projektverzeichnis `SQLite`.
 2. **Datenübertragung**: Das Skript `ha_to_influx.py` liest definierte Sensoren aus `sensorliste.txt` und schreibt deren Energieverbrauchsdaten in die InfluxDB `hadb`. Die Influx Datenbank mit den Sensordaten wird in  `\\CL10NAS\web\ha\influxdb` gespeichert.
-3. **Visualisierung**: Die Flask-Anwendung `drilldown_full_app.py` stellt die Verbrauchsdaten grafisch in Tages-, Monats- und Jahresansichten dar.
+3. **Visualisierung**: Die Flask-Anwendung `energy_dashboard.py` stellt die Verbrauchsdaten grafisch in Tages-, Monats- und Jahresansichten dar. In jeder Ansicht ist es möglich sich den Gesamtverbrauch der Einzelgeräte anzeigen zu lassen.
 
 Alle Pfade und Parameter werden zentral über die Datei `config.json` verwaltet.
 
@@ -89,7 +89,7 @@ python ha_to_influx.py
 ### 3. Web-Anwendung starten
 
 ```bash
-python drilldown_full_app.py
+python energy_dashboard.py
 ```
 
 Die Anwendung ist dann unter `http://127.0.0.1:5000` erreichbar.
@@ -103,6 +103,7 @@ Die Anwendung verwendet folgende HTML-Vorlagen:
 - `drilldown_day.html` – Tagesansicht
 - `drilldown_month.html` – Monatsansicht
 - `drilldown_year.html` – Jahresansicht
+- `total_per_sensor.html` – Gesamtverbrauch der Einzelgeräte
 
 ---
 
@@ -117,7 +118,7 @@ hadb/
 ├── create_influxdb_hadb.py      # Erstellt die InfluxDB
 ├── extract_latest_ha_db.py      # Extrahiert Home Assistant DB aus Backup
 ├── ha_to_influx.py              # Überträgt Daten in InfluxDB
-├── drilldown_full_app.py        # Flask Web-App zur Visualisierung
+├── energy_dashboard.py          # Flask Web-App zur Visualisierung
 ├── requirements.txt             # Abhängigkeiten
 ```
 
