@@ -24,6 +24,122 @@ Alle Pfade und Parameter werden zentral über die Datei `config.json` verwaltet.
 
 ## 📦 Installation
 
+### 📂 NAS-Zugriff unter Ubuntu
+# Zugriff auf Synology NAS-Freigabe `\\CL10NAS\web\ha` von Ubuntu
+
+Folgende Schritte sind notwendig, um von einem Ubuntu-System aus auf die Netzwerkfreigabe `\\CL10NAS\web\ha` zuzugreifen. Ziel ist es, die Freigabe dauerhaft oder temporär unter `/mnt/cl10nas/ha` zu mounten.
+
+---
+
+## 🔧 Voraussetzungen
+
+- Ubuntu System mit Internetverbindung
+- Zugang zur Synology NAS (`CL10NAS`) mit gültigem Benutzerkonto
+- Die Freigabe `web` auf der NAS muss SMB aktiviert haben
+
+---
+
+## 1. 📦 Erforderliche Pakete installieren
+
+```bash
+sudo apt update
+sudo apt install cifs-utils smbclient
+```
+
+---
+
+## 2. 📁 Mount-Verzeichnis anlegen
+
+```bash
+sudo mkdir -p /mnt/cl10nas/ha
+```
+
+---
+
+## 3. 📡 Verbindung testen (optional, aber empfohlen)
+
+Liste verfügbare Freigaben auf der NAS:
+
+```bash
+smbclient -L //CL10NAS -U dein_benutzername
+```
+
+Gib das Passwort bei Aufforderung ein.
+
+---
+
+## 4. 📥 Temporärer Mount
+
+```bash
+sudo mount -t cifs //CL10NAS/web/ha /mnt/cl10nas/ha \
+  -o username=dein_benutzername,password='dein_passwort',iocharset=utf8,file_mode=0777,dir_mode=0777
+```
+
+> Hinweis: Falls dein Passwort Sonderzeichen wie `!` enthält, **unbedingt in einfache Hochkommas setzen**.
+
+Alternativ (sicherer): Erstelle eine Datei mit Zugangsdaten:
+
+```bash
+sudo nano /etc/samba/credentials_cl10nas
+```
+
+Inhalt:
+
+```
+username=dein_benutzername
+password=dein_passwort
+```
+
+Datei absichern:
+
+```bash
+sudo chmod 600 /etc/samba/credentials_cl10nas
+```
+
+Dann mounten mit:
+
+```bash
+sudo mount -t cifs //CL10NAS/web/ha /mnt/cl10nas/ha \
+  -o credentials=/etc/samba/credentials_cl10nas,iocharset=utf8,file_mode=0777,dir_mode=0777
+```
+
+---
+
+## 5. 🔁 Automatischer Mount beim Systemstart
+
+Ergänze in der Datei `/etc/fstab`:
+
+```bash
+//CL10NAS/web/ha  /mnt/cl10nas/ha  cifs  credentials=/etc/samba/credentials_cl10nas,iocharset=utf8,file_mode=0777,dir_mode=0777,nofail  0  0
+```
+
+Anschließend testen:
+
+```bash
+sudo mount -a
+```
+
+---
+
+## ✅ Prüfung
+
+```bash
+ls /mnt/cl10nas/ha
+```
+
+Wenn du die Inhalte der Freigabe siehst, war der Vorgang erfolgreich.
+
+---
+
+## 📌 Hinweise
+
+- Falls `CL10NAS` nicht auflösbar ist, verwende stattdessen die IP-Adresse der NAS, z. B.: `//192.168.2.121/web/ha`
+- Prüfe im NAS-Dienstmenü, ob **SMB aktiviert** ist
+- Stelle sicher, dass der Benutzer **Zugriffsrechte** auf die Freigabe `web` besitzt
+
+
+
+
 ### 1. Projekt klonen oder entpacken
 
 ```bash
@@ -57,6 +173,21 @@ Bearbeite die Datei `config.json`, um folgende Parameter zu setzen:
   }
 }
 ```
+
+#### 💻 Beispielkonfiguration für Ubuntu-Systeme:
+```json
+{
+  "backup_dir": "/mnt/cl10nas/ha",
+  "sqlite_dir": "SQLite",
+  "sensor_file": "sensorliste.txt",
+  "influxdb": {
+    "host": "CL10NAS",
+    "port": 8086,
+    "database": "hadb"
+  }
+}
+```
+
 
 ---
 
