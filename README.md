@@ -89,6 +89,7 @@ Inhalt:
 username=dein_benutzername
 password=dein_passwort
 ```
+In der Datei `/etc/samba/credentials_cl10nas` darf das Passwort nicht in Hochkommas `('...' oder "...")` gesetzt werden.
 
 Datei absichern:
 
