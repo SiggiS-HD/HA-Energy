@@ -6,7 +6,7 @@
 {% block navigation %}
 <div class="nav-buttons">
     <button onclick="window.location.href='/load_sensordaten?redirect={{ request.path }}'" style="background-color: #ffc107; color: black;">Lade Sensordaten</button>
-    <button onclick="window.location.href='/'">Zurück zur Jahresansicht</button>
+    <button onclick="window.location.href='/?year={{ year }}'">Zurück zur Jahresansicht</button>
     <button onclick="window.location.href='/{{ year if month > 1 else year - 1 }}/{{ '%02d' % (month - 1 if month > 1 else 12) }}'">Voriger Monat</button>
     <button onclick="window.location.href='/{{ year if month < 12 else year + 1 }}/{{ '%02d' % (month + 1 if month < 12 else 1) }}'">Nächster Monat</button>
     <button onclick="window.location.href='/total/month/{{ year }}/{{ '%02d' % month }}'">Gesamtverbrauch Einzelgeräte</button>
