@@ -55,6 +55,22 @@ def get_day_range(year, month, day):
     end = start + timedelta(days=1)
     return start.isoformat() + "Z", end.isoformat() + "Z"
 
+@app.route('/load_sensordaten')
+def load_sensordaten():
+    import subprocess
+    import pathlib
+    import sys
+    from flask import redirect, request
+
+    base_path = pathlib.Path(__file__).parent
+    log_path = base_path / "log_lade_sensordaten.txt"
+    with open(log_path, "w", encoding="utf-8") as log_file:
+        proc = subprocess.run([sys.executable, "ha_to_influx.py"], cwd=base_path, capture_output=True, text=True)
+        log_file.write("=== ha_to_influx.py ===\n")
+        log_file.write(proc.stdout + "\n" + proc.stderr + "\n")
+
+    return redirect(request.args.get("redirect", "/"))
+
 @app.route('/')
 def index():
     from collections import defaultdict

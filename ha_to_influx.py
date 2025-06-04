@@ -20,7 +20,7 @@ WHERE \"entity_id\" = '{friendly_name}'"""
     try:
         return datetime.fromisoformat(result[0]['time'].replace('Z', '+00:00'))
     except Exception as e:
-        print(f"⚠️ Fehler beim Lesen des Zeitstempels für {friendly_name}: {e}")
+        print(f" Fehler beim Lesen des Zeitstempels für {friendly_name}: {e}")
         return None
 
 def get_metadata_id(conn, sensor_id):
@@ -41,7 +41,7 @@ def import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_d
     conn = sqlite3.connect(db_path)
     metadata_id = get_metadata_id(conn, sensor_id)
     if metadata_id is None:
-        print(f"⚠️ Kein metadata_id für {sensor_id}")
+        print(f" Keine metadata_id für {sensor_id}")
         conn.close()
         return
 
@@ -54,7 +54,7 @@ def import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_d
     conn.close()
 
     if df.empty:
-        print(f"⚠️ Keine neuen Daten für {friendly_name}")
+        print(f" Keine neuen Daten für {friendly_name}")
         return
 
     df['timestamp'] = pd.to_datetime(df['start_ts'], unit='s', utc=True)
@@ -68,7 +68,7 @@ def import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_d
     elif sensor_type == "counter":
         df['value'] = df['sum']
     else:
-        print(f"⚠️ Unbekannter Sensortyp bei {friendly_name}")
+        print(f" Unbekannter Sensortyp bei {friendly_name}")
         return
 
     json_body = [
@@ -88,9 +88,9 @@ def import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_d
 
     if json_body:
         influx_client.write_points(json_body)
-        print(f"✅ {len(json_body)} Werte für {friendly_name} importiert.")
+        print(f" {len(json_body)} Werte für {friendly_name} importiert.")
     else:
-        print(f"⚠️ Keine gültigen Werte für {friendly_name}")
+        print(f" Keine gültigen Werte für {friendly_name}")
 
 def read_sensor_config(path):
     sensors = []
@@ -105,12 +105,12 @@ def main():
     config = load_config()
     db_path = extract_latest_ha_db()
     if not db_path:
-        print("❌ Datenbank konnte nicht extrahiert werden.")
+        print(" Datenbank konnte nicht extrahiert werden.")
         return
 
     sensor_file_path = Path(__file__).parent / config["sensor_file"]
     if not sensor_file_path.exists():
-        print(f"❌ Sensorliste nicht gefunden: {sensor_file_path}")
+        print(f" Sensorliste nicht gefunden: {sensor_file_path}")
         return
 
     sensors = read_sensor_config(sensor_file_path)
@@ -121,12 +121,12 @@ def main():
     influx_client.switch_database(config["influxdb"]["database"])
 
     for sensor_id, friendly_name in sensors:
-        print(f"🔄 Verarbeite: {friendly_name} ({sensor_id})")
+        print(f" Verarbeite: {friendly_name} ({sensor_id})")
         latest = get_latest_timestamp(influx_client, friendly_name)
         start_date = latest if latest else datetime.fromtimestamp(0, tz=timezone.utc)
         import_sensor_data(db_path, influx_client, sensor_id, friendly_name, start_date)
 
-    print("🏁 Import abgeschlossen.")
+    print(" Import abgeschlossen.")
 
 if __name__ == "__main__":
     main()

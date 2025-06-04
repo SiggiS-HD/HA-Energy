@@ -226,6 +226,8 @@ python energy_dashboard.py
 
 Die Anwendung ist dann unter `http://127.0.0.1:5000` erreichbar.
 
+Die Funktion `letztes HA-Backup extrahieren und Verbrauchsdaten in InfluxDB schreiben` kann im Energy Dashboard auch über den Button `Lade Sensordaten` ausgelöst werden. Im Projektverzeichnis wird dann die Datei `log_lade_sensordaten.txt` gespeichert, in der die ausgeführten Aktionen und mögliche Fehler protokolliert sind.
+
 ---
 
 ## 📊 Visualisierung
