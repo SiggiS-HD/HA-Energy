@@ -15,9 +15,16 @@
 {% block chart_events %}
 events: {
     dataPointSelection: function(event, chartContext, config) {
-        const month = config.dataPointIndex + 1;
+        const months = {{ month_categories|tojson }};
+        const monthMap = {
+            "Jan": "01", "Feb": "02", "Mär": "03", "Apr": "04",
+            "Mai": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+            "Sep": "09", "Okt": "10", "Nov": "11", "Dez": "12"
+        };
+        const selectedLabel = months[config.dataPointIndex];
+        const month = monthMap[selectedLabel];
         const year = {{ year }};
-        const url = `/${year}/${month.toString().padStart(2, '0')}`;
+        const url = `/${year}/${month}`;
         window.location.href = url;
     }
 },
