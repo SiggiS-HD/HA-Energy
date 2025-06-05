@@ -6,8 +6,8 @@
 
 ### 🔄 Workflow
 
-1. **Backup-Extraktion**: Das Skript `extract_latest_ha_db.py` kopiert die Datei `home-assistant_v2.db` aus dem aktuellsten Home Assistant Full Backup ins Projektverzeichnis `SQLite`.
-2. **Datenübertragung**: Das Skript `ha_to_influx.py` liest definierte Sensoren aus `sensorliste.txt` und schreibt deren Energieverbrauchsdaten in die InfluxDB `hadb`. Die Influx Datenbank mit den Sensordaten wird in  `\\CL10NAS\web\ha\influxdb` gespeichert.
+1. **Backup-Extraktion**: Das Skript `extract_latest_ha_db.py` kopiert die Datei `home-assistant_v2.db` aus dem aktuellsten Home Assistant Full Backup ins Projektverzeichnis `\SQLite`.
+2. **Datenübertragung**: Das Skript `ha_to_influx.py` liest definierte Sensoren aus `sensorliste.txt` und schreibt deren Energieverbrauchsdaten in die InfluxDB `hadb`. Die Influx Datenbank mit den Sensordaten wird in  `backup_dir\influxdb` gespeichert.
 3. **Visualisierung**: Die Flask-Anwendung `energy_dashboard.py` stellt die Verbrauchsdaten grafisch in Tages-, Monats- und Jahresansichten dar. In jeder Ansicht ist es möglich sich den Gesamtverbrauch der Einzelgeräte anzeigen zu lassen.
 
 Alle Pfade und Parameter werden zentral über die Datei `config.json` verwaltet.
@@ -18,14 +18,14 @@ Alle Pfade und Parameter werden zentral über die Datei `config.json` verwaltet.
 
 - Python 3.10 oder neuer
 - InfluxDB 1.8 (läuft in einem Docker-Container auf dem Server `CL10NAS`)
-- Zugriff auf Home Assistant Backups auf `\\CL10NAS\web\ha`
+- Zugriff auf Home Assistant Backups auf `backup_dir = \\CL10NAS\web\ha`
 
 ---
 
 ## 📦 Installation
 
 ### 📂 NAS-Zugriff unter Ubuntu
-# Zugriff auf Synology NAS-Freigabe `\\CL10NAS\web\ha` von Ubuntu
+### Zugriff auf Synology NAS-Freigabe `backup_dir = \\CL10NAS\web\ha` von Ubuntu
 
 Folgende Schritte sind notwendig, um von einem Ubuntu-System aus auf die Netzwerkfreigabe `\\CL10NAS\web\ha` zuzugreifen. Ziel ist es, die Freigabe dauerhaft oder temporär unter `/mnt/cl10nas/ha` zu mounten.
 
