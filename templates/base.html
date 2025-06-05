@@ -25,26 +25,39 @@
         }
         .nav-buttons {
             margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
         }
         .nav-buttons button {
             background-color: #007bff;
             border: none;
             color: white;
-            padding: 10px 16px;
-            margin-right: 10px;
-            font-size: 16px;
+            padding: 6px 12px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 6px;
+            flex-shrink: 1;
+            white-space: nowrap;
         }
         .nav-buttons button:hover {
             background-color: #0056b3;
         }
+        @media (max-width: 600px) {
+            .nav-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-buttons button {
+                font-size: 13px;
+                padding: 8px;
+            }
+        }
     </style>
-
 </head>
 <body>
     <h1>{% block heading %}{% endblock %} {% if total_kwh %}<span style="font-weight: normal;">(gesamt: {{ total_kwh }} kWh)</span>{% endif %}</h1>
-
 
     <div class="nav">
         {% block navigation %}{% endblock %}
