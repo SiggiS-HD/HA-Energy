@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 import json
 from datetime import datetime
+import platform
 
 def load_config():
     with open(Path(__file__).parent / "config.json", "r") as f:
@@ -11,18 +12,21 @@ def load_config():
 
 def extract_latest_ha_db():
     config = load_config()
-    backup_dir = Path(config["backup_dir"])
+
+    system = platform.system()
+    if system == "Windows":
+        backup_dir = Path(config["backup_dir_windows"])
+    else:
+        backup_dir = Path(config["backup_dir_linux"])
+
     output_dir = Path(__file__).parent / config["sqlite_dir"]
     temp_dir = output_dir / "temp_extract"
     output_dir.mkdir(parents=True, exist_ok=True)
     temp_dir.mkdir(parents=True, exist_ok=True)
     try:
-
-        # Heutiges Datum als Marker
         today = datetime.now().strftime("%Y-%m-%d")
         final_path = output_dir / "home-assistant_v2.db"
 
-        # Wenn Datei bereits heute aktualisiert wurde, überspringen
         if final_path.exists():
             modified_date = datetime.fromtimestamp(final_path.stat().st_mtime).strftime("%Y-%m-%d")
             if modified_date == today:
@@ -58,10 +62,10 @@ def extract_latest_ha_db():
 
         shutil.rmtree(temp_dir)
         return str(final_path)
-    
+
     finally:
         if temp_dir.exists():
-            shutil.rmtree(temp_dir, ignore_errors=True) 
-               
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
 if __name__ == "__main__":
-        extract_latest_ha_db()
+    extract_latest_ha_db()

@@ -1,5 +1,6 @@
 {
-  "backup_dir": "\\\\CL10NAS\\web\\ha",
+  "backup_dir_windows": "\\\\CL10NAS\\web\\ha",
+  "backup_dir_linux": "/mnt/cl10nas/ha",
   "sqlite_dir": "SQLite",
   "sensor_file": "sensorliste.txt",
   "influxdb": {

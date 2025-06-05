@@ -164,7 +164,8 @@ Bearbeite die Datei `config.json`, um folgende Parameter zu setzen:
 
 ```json
 {
-  "backup_dir": "\\\\CL10NAS\\web\\ha",
+  "backup_dir_windows": "\\\\CL10NAS\\web\\ha",
+  "backup_dir_linux": "/mnt/cl10nas/ha",
   "sqlite_dir": "SQLite",
   "sensor_file": "sensorliste.txt",
   "influxdb": {
@@ -174,22 +175,6 @@ Bearbeite die Datei `config.json`, um folgende Parameter zu setzen:
   }
 }
 ```
-
-#### 💻 Beispielkonfiguration für Ubuntu-Systeme:
-```json
-{
-  "backup_dir": "/mnt/cl10nas/ha",
-  "sqlite_dir": "SQLite",
-  "sensor_file": "sensorliste.txt",
-  "influxdb": {
-    "host": "CL10NAS",
-    "port": 8086,
-    "database": "hadb"
-  }
-}
-```
-
-
 ---
 
 ## 🐳 InfluxDB im Docker-Container starten
