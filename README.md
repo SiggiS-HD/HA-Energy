@@ -183,7 +183,7 @@ Bearbeite die Datei `config.json`, um folgende Parameter zu setzen:
 docker run -d \
   --name influxdb \
   -p 8086:8086 \
-  -v /pfad/zum/influxdb/data:/var/lib/influxdb \
+  -v backup_dir/influxdb/data:/var/lib/influxdb \
   influxdb:1.8
 ```
 

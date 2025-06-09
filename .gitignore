@@ -14,7 +14,7 @@ __pycache__/
 venv/
 
 _Ablauf.txt
-log_lade_sensordaten.txt
+_PM2.txt
 
 # Home Assistant Database
 SQLite/
